@@ -21,5 +21,38 @@
 <body>
     <h1>Hello World</h1>
     <div>HELLO</div>
+    <my-component></my-component>
+    <script>
+        class MyComponent extends HTMLElement {
+          constructor() {
+            super();
+    
+            // Attach shadow root
+            const shadow = this.attachShadow({ mode: 'open' });
+    
+            // Create content
+            const wrapper = document.createElement('div');
+            wrapper.textContent = 'This is inside the Shadow DOM';
+    
+            // Apply styles
+            const style = document.createElement('style');
+            style.textContent = `
+              div {
+                padding: 10px;
+                background-color: #f0f0f0;
+                border: 1px solid #aaa;
+                font-weight: bold;
+              }
+            `;
+    
+            // Append style and content to shadow root
+            shadow.appendChild(style);
+            shadow.appendChild(wrapper);
+          }
+        }
+    
+        // Define the custom element
+        customElements.define('my-component', MyComponent);
+      </script>
 </body>
 </html>
