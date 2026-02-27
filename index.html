@@ -21,38 +21,44 @@
 <body>
     <h1>Hello World</h1>
     <div>HELLO</div>
-    <my-component></my-component>
+    <shadow-level-1></shadow-level-1>
     <script>
-        class MyComponent extends HTMLElement {
+      const levels = [
+        { tag: 'shadow-level-1',  bg: '#ffeeba', label: 'Level 1',  html: '<h2>Level 1 Header</h2><p>Some text at level 1.</p><ul><li>Item A</li><li>Item B</li></ul>' },
+        { tag: 'shadow-level-2',  bg: '#d4edda', label: 'Level 2',  html: '<h3>Level 2 Header</h3><p>Nested deeper now.</p><button>Click me (L2)</button>' },
+        { tag: 'shadow-level-3',  bg: '#d1ecf1', label: 'Level 3',  html: '<h3>Level 3 Header</h3><p>Getting deeper...</p><input type="text" placeholder="Type here (L3)" />' },
+        { tag: 'shadow-level-4',  bg: '#f8d7da', label: 'Level 4',  html: '<h4>Level 4 Header</h4><p>Four levels in.</p><span style="color:red">Red span at L4</span>' },
+        { tag: 'shadow-level-5',  bg: '#e2d9f3', label: 'Level 5',  html: '<h4>Level 5 Header</h4><p>Halfway there!</p><ol><li>One</li><li>Two</li><li>Three</li></ol>' },
+        { tag: 'shadow-level-6',  bg: '#fff3cd', label: 'Level 6',  html: '<h4>Level 6 Header</h4><p>Six levels deep.</p><blockquote>A quote at level 6</blockquote>' },
+        { tag: 'shadow-level-7',  bg: '#cfe2ff', label: 'Level 7',  html: '<h5>Level 7 Header</h5><p>Seven layers down.</p><table><tr><td>Cell 1</td><td>Cell 2</td></tr></table>' },
+        { tag: 'shadow-level-8',  bg: '#d3f9d8', label: 'Level 8',  html: '<h5>Level 8 Header</h5><p>Almost there.</p><img src="https://placehold.co/80x30" alt="placeholder" />' },
+        { tag: 'shadow-level-9',  bg: '#ffe8cc', label: 'Level 9',  html: '<h5>Level 9 Header</h5><p>One more to go!</p><code>console.log("level 9")</code>' },
+        { tag: 'shadow-level-10', bg: '#f0f0f0', label: 'Level 10', html: '<h5>Level 10 Header</h5><p>Bottom of the shadow DOM stack!</p><strong>The deepest level.</strong>' },
+      ];
+
+      levels.forEach((level, i) => {
+        const nextTag = levels[i + 1] ? `<${levels[i + 1].tag}></${levels[i + 1].tag}>` : '';
+
+        class ShadowLevel extends HTMLElement {
           constructor() {
             super();
-    
-            // Attach shadow root
             const shadow = this.attachShadow({ mode: 'open' });
-    
-            // Create content
-            const wrapper = document.createElement('div');
-            wrapper.textContent = 'This is inside the Shadow DOM';
-    
-            // Apply styles
-            const style = document.createElement('style');
-            style.textContent = `
-              div {
-                padding: 10px;
-                background-color: #f0f0f0;
-                border: 1px solid #aaa;
-                font-weight: bold;
-              }
+            shadow.innerHTML = `
+              <style>
+                :host { display: block; padding: 12px; background: ${level.bg}; border: 1px solid #aaa; margin: 6px; }
+                h2, h3, h4, h5 { margin: 0 0 6px; }
+              </style>
+              <div>
+                <em>${level.label}</em>
+                ${level.html}
+                ${nextTag}
+              </div>
             `;
-    
-            // Append style and content to shadow root
-            shadow.appendChild(style);
-            shadow.appendChild(wrapper);
           }
         }
-    
-        // Define the custom element
-        customElements.define('my-component', MyComponent);
-      </script>
+
+        customElements.define(level.tag, ShadowLevel);
+      });
+    </script>
 </body>
 </html>
