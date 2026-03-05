@@ -21,98 +21,12 @@
 <body>
     <h1>Hello World</h1>
     <div>HELLO</div>
-    <!-- No nesting -->
-    <flat-component></flat-component>
-
-    <!-- One level of nesting -->
-    <outer-single></outer-single>
-
-    <!-- Two levels of nesting -->
-    <outer-double></outer-double>
-
-    <script>
-      // No nesting — plain shadow DOM
-      class FlatComponent extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 12px; background: #ffeeba; border: 1px solid #aaa; }</style>
-            <h3>Flat Shadow DOM</h3>
-            <p>No nesting here. Just a simple shadow root.</p>
-            <button>Click me</button>
-          `;
-        }
-      }
-      customElements.define('flat-component', FlatComponent);
-
-      // Inner component used by OuterSingle and OuterDouble
-      class InnerComponent extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 10px; background: #d1ecf1; border: 1px solid #aaa; }</style>
-            <h4>Inner Shadow DOM</h4>
-            <p>One level inside an outer shadow root.</p>
-            <input type="text" placeholder="Type something..." />
-          `;
-        }
-      }
-      customElements.define('inner-component', InnerComponent);
-
-      // Deepest component used by OuterDouble
-      class DeepComponent extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 10px; background: #d4edda; border: 1px solid #aaa; }</style>
-            <h4>Deep Shadow DOM</h4>
-            <p>Two levels inside the outermost shadow root.</p>
-            <strong>The deepest level.</strong>
-          `;
-        }
-      }
-      customElements.define('deep-component', DeepComponent);
-
-      // One level of nesting: outer > inner
-      class OuterSingle extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 12px; background: #e2d9f3; border: 1px solid #aaa; }</style>
-            <h3>Outer Shadow DOM (1 level of nesting)</h3>
-            <p>This shadow root contains another shadow DOM below:</p>
-            <inner-component></inner-component>
-          `;
-        }
-      }
-      customElements.define('outer-single', OuterSingle);
-
-      // Two levels of nesting: outer > inner (with deep inside)
-      class InnerWithDeep extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 10px; background: #d1ecf1; border: 1px solid #aaa; }</style>
-            <h4>Middle Shadow DOM</h4>
-            <p>One level in — contains another shadow DOM below:</p>
-            <deep-component></deep-component>
-          `;
-        }
-      }
-      customElements.define('inner-with-deep', InnerWithDeep);
-
-      class OuterDouble extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>:host { display: block; padding: 12px; background: #fff3cd; border: 1px solid #aaa; }</style>
-            <h3>Outer Shadow DOM (2 levels of nesting)</h3>
-            <p>This shadow root contains a middle shadow DOM, which itself contains another:</p>
-            <inner-with-deep></inner-with-deep>
-          `;
-        }
-      }
-      customElements.define('outer-double', OuterDouble);
-    </script>
+    <!-- Level 1 iframe -->
+    <iframe
+      srcdoc="<!DOCTYPE html><html><head><meta charset='UTF-8'><style>body{font-family:sans-serif;padding:16px;background:#e2d9f3;}</style></head><body><h2>Level 1 iframe</h2><p>sojolbose.github.io/html-dom-test</p><iframe srcdoc=&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset='UTF-8'&gt;&lt;style&gt;body{font-family:sans-serif;padding:16px;background:#d4edda;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h2&gt;Level 2 iframe&lt;/h2&gt;&lt;p&gt;sojolbose.github.io/html-dom-test&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot; width='660' height='180' style='border:2px solid #aaa;display:block;margin-top:12px;'></iframe></body></html>"
+      width="800"
+      height="400"
+      style="border: 2px solid #aaa; display: block; margin-top: 16px;"
+    ></iframe>
 </body>
 </html>
