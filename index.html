@@ -138,6 +138,62 @@
   </script>
 
   <!-- 30-level deep nested DOM -->
+
+  <!-- Lengthy filler content to make the page scrollable -->
+  <section style="max-width: 700px; margin: 40px auto; padding: 0 16px;">
+    <h2>Scroll down to reveal the footer</h2>
+    <script>
+      document.write(
+        Array.from({ length: 60 }, (_, i) => `
+          <p>Filler paragraph ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+          veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        `).join('')
+      );
+    </script>
+  </section>
+
+  <footer id="site-footer" style="
+      display: none;
+      background: #222;
+      color: #fff;
+      padding: 32px 16px;
+      text-align: center;
+      font-family: sans-serif;
+    ">
+    <!-- Populated dynamically once the user scrolls 80% of the page -->
+  </footer>
+
+  <script>
+    (function () {
+      var footer = document.getElementById('site-footer');
+      var populated = false;
+
+      function populateFooter() {
+        if (populated) return;
+        populated = true;
+        footer.innerHTML =
+          '<h3>You made it to the bottom!</h3>' +
+          '<p>&copy; ' + new Date().getFullYear() + ' My Site. All rights reserved.</p>';
+        footer.style.display = 'block';
+      }
+
+      function checkScroll() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var viewportHeight = window.innerHeight;
+        var fullHeight = document.documentElement.scrollHeight;
+        var scrolledPercent = (scrollTop + viewportHeight) / fullHeight;
+
+        if (scrolledPercent >= 0.8) {
+          populateFooter();
+        }
+      }
+
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      // Check once on load in case the page is already short enough to be at 80%.
+      checkScroll();
+    })();
+  </script>
 </body>
 
 </html>
